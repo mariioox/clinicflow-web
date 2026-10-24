@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage & outputs
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Agent metadata
+.agents/
+
+# Requirements & local reference docs (untracked)
+req/
+req
+
+# Vite
+vite.config.ts.timestamp-*
