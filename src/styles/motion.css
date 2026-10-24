@@ -1,0 +1,74 @@
+/* ClinicFlow motion
+ *
+ * Rules (see AGENT.md):
+ * - Short (150–600 ms), easing out, transform/opacity only where possible (protects INP).
+ * - Animate CHANGES, never refreshes: these classes are applied when a value changes,
+ *   not on every poll.
+ * - Everything here is switched off by the prefers-reduced-motion rule in tokens.css.
+ */
+
+/* Press + lift on interactive tiles */
+.cf-press { transition: transform 140ms ease-out, background-color 220ms ease-out, border-color 220ms ease-out, color 220ms ease-out, box-shadow 220ms ease-out; }
+.cf-press:active:not(:disabled) { transform: scale(0.96); }
+.cf-lift:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px -12px rgba(15, 61, 46, 0.45); }
+
+/* Rolling digits (odometer) */
+.cf-roll { display: inline-block; height: 1em; line-height: 1em; overflow: hidden; vertical-align: bottom; }
+.cf-roll-col { display: block; transition: transform 560ms cubic-bezier(.2, .9, .2, 1); }
+.cf-roll-col > span { display: block; height: 1em; line-height: 1em; }
+
+/* Heartbeat line that draws itself (loaders) */
+@keyframes cf-ecg { 0% { stroke-dashoffset: 100; } 55% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -100; } }
+.cf-ecg { stroke-dasharray: 100; animation: cf-ecg 1.6s ease-in-out infinite; }
+
+/* Skeleton shimmer */
+@keyframes cf-shimmer { 0% { background-position: -420px 0; } 100% { background-position: 420px 0; } }
+.cf-skel {
+  background-color: var(--soft);
+  background-image: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0) 100%);
+  background-size: 420px 100%;
+  background-repeat: no-repeat;
+  animation: cf-shimmer 1.3s ease-in-out infinite;
+}
+
+/* Confirm button fills while the request is in flight */
+@keyframes cf-sweep { from { transform: scaleX(0); } to { transform: scaleX(0.92); } }
+.cf-sweep { position: absolute; inset: 0; transform-origin: left; background: rgba(15, 61, 46, 0.16); animation: cf-sweep 1.6s cubic-bezier(.4, 0, .2, 1) both; }
+
+/* Entrances */
+@keyframes cf-fadein { from { opacity: 0; } to { opacity: 1; } }
+.cf-fade { animation: cf-fadein 420ms ease-out both; }
+@keyframes cf-rise { 0% { opacity: 0; transform: translateY(14px); } 100% { opacity: 1; transform: none; } }
+.cf-rise { animation: cf-rise 460ms cubic-bezier(.2, .9, .2, 1) both; }
+@keyframes cf-slide { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: none; } }
+.cf-slide { animation: cf-slide 300ms ease-out both; }
+@keyframes cf-pop { 0% { opacity: 0; transform: translateY(8px) scale(0.95); } 100% { opacity: 1; transform: none; } }
+.cf-pop { animation: cf-pop 360ms cubic-bezier(.2, .9, .2, 1) both; }
+
+/* Taken slot: strike line draws across */
+@keyframes cf-strike { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cf-strike { position: absolute; left: 12px; right: 12px; top: 50%; height: 2px; transform-origin: left; animation: cf-strike 420ms 80ms ease-out both; }
+
+/* Success: rings burst out, then crosses and dots fall away */
+@keyframes cf-burst { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.4); opacity: 0; } }
+.cf-burst { position: absolute; inset: 0; border-radius: 9999px; border: 2px solid currentColor; animation: cf-burst 900ms 120ms ease-out both; }
+.cf-burst-late { animation-delay: 300ms; }
+@keyframes cf-confetti { 0% { opacity: 0; transform: translateY(0) scale(.3) rotate(0); } 15% { opacity: 1; transform: translateY(-8px) scale(1); } 100% { opacity: 0; transform: translateY(48px) rotate(150deg); } }
+.cf-conf { position: absolute; display: block; animation: cf-confetti 1700ms ease-out both; }
+
+/* Sunday: the clinic is asleep */
+@keyframes cf-zz { 0% { opacity: 0; transform: translate(0, 0) scale(.7); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(14px, -26px) scale(1.15); } }
+.cf-zz { position: absolute; font-family: var(--font-serif); font-weight: 800; animation: cf-zz 2.4s ease-out infinite both; }
+@keyframes cf-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.cf-bob { animation: cf-bob 3.2s ease-in-out infinite; }
+
+/* Reception: a status that just changed glows once; "+1 waiting" floats up */
+@keyframes cf-glow { 0% { box-shadow: 0 0 0 0 rgba(200, 241, 105, 0.9); } 100% { box-shadow: 0 0 0 9px rgba(200, 241, 105, 0); } }
+.cf-glow { animation: cf-glow 900ms ease-out; border-radius: var(--radius-sm); }
+@keyframes cf-floatup { 0% { opacity: 0; transform: translateY(8px); } 20% { opacity: 1; } 100% { opacity: 0; transform: translateY(-26px); } }
+.cf-floatup { animation: cf-floatup 1400ms ease-out both; }
+
+/* Live dot */
+@keyframes cf-live { 0% { transform: scale(1); opacity: 0.8; } 70% { transform: scale(2.4); opacity: 0; } 100% { opacity: 0; } }
+.cf-live { position: relative; }
+.cf-live::after { content: ""; position: absolute; inset: 0; border-radius: 9999px; background: inherit; animation: cf-live 2s ease-out infinite; }
