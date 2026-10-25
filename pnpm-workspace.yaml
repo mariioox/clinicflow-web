@@ -1,0 +1,16 @@
+# Single-package repo. `packages` is listed only because pnpm 9 requires it when this file exists.
+packages:
+  - "."
+
+# Which dependencies may run install scripts. Newer pnpm (11+) stops the install
+# (ERR_PNPM_IGNORED_BUILDS) when a dependency's build script hasn't been approved.
+#   esbuild: used by Vite; its install script checks the native binary.
+#   @scarf/scarf: an install-time analytics ping pulled in by a dev tool; not needed.
+allowBuilds:
+  esbuild: true
+  "@scarf/scarf": false
+# The same decision in the format pnpm 10 reads.
+onlyBuiltDependencies:
+  - esbuild
+ignoredBuiltDependencies:
+  - "@scarf/scarf"
